@@ -39,6 +39,8 @@ public class GestionTableBail implements ListSelectionListener {
 	private DaoEtatdesLieux daoEDL;
 	private DaoPaiement daoPaiement;
 	public static Bail bail;
+	public static int idImmeuble;
+	public static String numeroLogement;
 	
 	public GestionTableBail(MesLocation mesLocation) {
 		this.mesLocation = mesLocation ;
@@ -76,13 +78,13 @@ public class GestionTableBail implements ListSelectionListener {
 			ll.add(iterateurLogement.next());
 		}
 		
-		int idImmeuble = ll.get(index).getImmeuble().getIdImmeuble();
-		String numerol = ll.get(index).getNumero();
+		idImmeuble = ll.get(index).getImmeuble().getIdImmeuble();
+		numeroLogement = ll.get(index).getNumero();
 		
 		
 		Iterateur<Bail> iterateurBail = null;
 		try {
-			iterateurBail = daoBail.findByLogementImmeubleIterateur(numerol,Integer.toString(idImmeuble));
+			iterateurBail = daoBail.findByLogementImmeubleIterateur(numeroLogement,Integer.toString(idImmeuble));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -97,7 +99,7 @@ public class GestionTableBail implements ListSelectionListener {
 		//Table locataire
 		Iterateur<Locataire> iterateurLocataire = null;
 		try {
-			iterateurLocataire = daoLocataire.findByLogementImmeubleIterateur(numerol,Integer.toString(idImmeuble));
+			iterateurLocataire = daoLocataire.findByLogementImmeubleIterateur(numeroLogement,Integer.toString(idImmeuble));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -112,7 +114,7 @@ public class GestionTableBail implements ListSelectionListener {
 		//Table Caution
 		Iterateur<Caution> iterateurCaution = null;
 		try {
-			iterateurCaution = daoCaution.findByLogementImmeubleIterateur(numerol,Integer.toString(idImmeuble));
+			iterateurCaution = daoCaution.findByLogementImmeubleIterateur(numeroLogement,Integer.toString(idImmeuble));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -127,7 +129,7 @@ public class GestionTableBail implements ListSelectionListener {
 		//Table Agence
 		Iterateur<Agence> iterateurAgence = null;
 		try {
-			iterateurAgence = daoAgence.findByLogementImmeubleIterateur(numerol,Integer.toString(idImmeuble));
+			iterateurAgence = daoAgence.findByLogementImmeubleIterateur(numeroLogement,Integer.toString(idImmeuble));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -142,7 +144,7 @@ public class GestionTableBail implements ListSelectionListener {
 		// Table loyer
 		Iterateur<Paiement> iterateurPaiement = null;
 		try {
-			iterateurPaiement = daoPaiement.findByLogementImmeubleIterateur(numerol,Integer.toString(idImmeuble));
+			iterateurPaiement = daoPaiement.findByLogementImmeubleIterateur(numeroLogement,Integer.toString(idImmeuble));
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -165,7 +167,7 @@ public class GestionTableBail implements ListSelectionListener {
 	    //Table EDL
   		Iterateur<EtatdesLieux> iterateurEDL = null;
   		try {
-  			iterateurEDL = daoEDL.findByLogementImmeubleIterateur(numerol,Integer.toString(idImmeuble));
+  			iterateurEDL = daoEDL.findByLogementImmeubleIterateur(numeroLogement,Integer.toString(idImmeuble));
   		} catch (SQLException e1) {
   			e1.printStackTrace();
   		}

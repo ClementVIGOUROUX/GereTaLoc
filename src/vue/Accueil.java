@@ -48,7 +48,7 @@ public class Accueil extends JFrame implements ActionListener {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+			public void run() {	
 				try {
 					Accueil frame = new Accueil();
 					frame.setVisible(true);
@@ -64,7 +64,6 @@ public class Accueil extends JFrame implements ActionListener {
 	 */
 	public Accueil() {
 		
-		System.out.println("test push git");
 		this.gestionClic = new GestionAccueil(this);
 		addWindowListener(this.gestionClic);
 		setTitle("Geretaloc");

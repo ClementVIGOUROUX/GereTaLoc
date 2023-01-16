@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 
 import modele.Bail;
@@ -12,6 +13,7 @@ import modele.EtatdesLieux;
 import modele.dao.requetes.RequeteSelectEDL;
 import modele.dao.requetes.RequeteSelectEDLById;
 import modele.dao.requetes.RequeteSelectEDLLogementImmeuble;
+import modele.dao.requetes.RequeteUpdateEDLRepertoire;
 import modele.dao.requetes.SousProgrammeInsertEDL;
 
 public class DaoEtatdesLieux extends DaoModele<EtatdesLieux>  implements Dao<EtatdesLieux>{
@@ -29,11 +31,27 @@ public class DaoEtatdesLieux extends DaoModele<EtatdesLieux>  implements Dao<Eta
 		st.execute();
 		st.close();
 		
+		
 	}
-
+	
 	@Override
 	public void update(EtatdesLieux donnees) {
-		// TODO Auto-generated method stub
+		RequeteUpdateEDLRepertoire req = new RequeteUpdateEDLRepertoire() ;
+		try {
+			this.miseAJour(req, donnees);
+		} catch (SQLException | ParseException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void updateRepertoire(EtatdesLieux donnees) {
+		RequeteUpdateEDLRepertoire req = new RequeteUpdateEDLRepertoire() ;
+		try {
+			this.miseAJour(req, donnees);
+		} catch (SQLException | ParseException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -61,7 +79,7 @@ public class DaoEtatdesLieux extends DaoModele<EtatdesLieux>  implements Dao<Eta
 		Bail b = daoBail.findById(curseur.getString(3));
 		Date dateEDL = curseur.getDate(2);
 		
-		return new EtatdesLieux(curseur.getInt(1), dateEDL.toString(), b);
+		return new EtatdesLieux(curseur.getInt(1), dateEDL.toString(), curseur.getString(4), b);
 	}
 	
 	public static Iterateur<EtatdesLieux> getIterateurEDL() {
@@ -74,7 +92,7 @@ public class DaoEtatdesLieux extends DaoModele<EtatdesLieux>  implements Dao<Eta
         req.parametresID(st,id[0]);
         ResultSet res = st.executeQuery();
 
-        // Instanciation de l'itÃ©rateur
+        // Instanciation de l'itérateur
         DaoEtatdesLieux.iterateurEtatdesLieux = new Iterateur<EtatdesLieux>(res, this);
         return DaoEtatdesLieux.iterateurEtatdesLieux;
     }
@@ -85,7 +103,7 @@ public class DaoEtatdesLieux extends DaoModele<EtatdesLieux>  implements Dao<Eta
         req.parametresID(st,id[0],id[1]);
         ResultSet res = st.executeQuery();
 
-        // Instanciation de l'itÃ©rateur
+        // Instanciation de l'itérateur
         DaoEtatdesLieux.iterateurEtatdesLieux = new Iterateur<EtatdesLieux>(res, this);
         return DaoEtatdesLieux.iterateurEtatdesLieux;
     }

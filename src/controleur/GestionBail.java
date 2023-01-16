@@ -115,7 +115,7 @@ public class GestionBail implements ActionListener{
 			
 			// Ajouter EDL
 			
-			EtatdesLieux edl = new EtatdesLieux(1, this.ajouterBail.getFieldEtat(),
+			EtatdesLieux edl = new EtatdesLieux(1, this.ajouterBail.getFieldEtat(), "", 
 												   bail);
 			
 			try {

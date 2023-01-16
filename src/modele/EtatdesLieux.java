@@ -6,13 +6,15 @@ public class EtatdesLieux {
 	
 	private int idEDL;
 	private String dateEDL;
+	private String repertoire ;
 	private Bail bail ;
 	
 	
-	public EtatdesLieux(int idEDL, String dateEDL, Bail bail) {
+	public EtatdesLieux(int idEDL, String dateEDL, String repertoire, Bail bail) {
 		super();
 		this.idEDL = idEDL;
 		this.dateEDL = dateEDL;
+		this.repertoire = repertoire ;
 		this.bail = bail;
 	}
 
@@ -34,6 +36,15 @@ public class EtatdesLieux {
 
 	public void setDateEDL(String dateEDL) {
 		this.dateEDL = dateEDL;
+	}
+	
+	public String getRepertoire() {
+		return repertoire;
+	}
+
+
+	public void setRepertoire(String repertoire) {
+		this.repertoire = repertoire;
 	}
 
 
