@@ -25,6 +25,7 @@ import modele.dao.Iterateur;
 import vue.Accueil;
 import vue.Charge;
 import vue.Connexion;
+import vue.DeclarationFiscale;
 import vue.InformationProp;
 import vue.MesLocataires;
 import vue.MesLocation;
@@ -37,7 +38,7 @@ public class GestionAccueil implements ActionListener,WindowListener {
 	private MesLocataires mesLocataires ;
 	private MesLocation mesLocation ;
 	private Charge charge ;
-	
+	private DeclarationFiscale declarationFiscale ;
 	
 	public GestionAccueil(Accueil accueil) {
 		this.accueil = accueil ;
@@ -177,8 +178,13 @@ public class GestionAccueil implements ActionListener,WindowListener {
 			break;
 		
 			
-		case("DÃ©claration Fiscale"):
-			System.out.println("declare tes revenus");
+		case("Déclaration Fiscale"):
+			this.declarationFiscale = new DeclarationFiscale();
+		
+			//A TOI DE JOUER KIMI LE BG
+		
+			this.declarationFiscale.setVisible(true);
+			this.declarationFiscale.toFront();
 			break ;
 			
 		case("Statistiques"):

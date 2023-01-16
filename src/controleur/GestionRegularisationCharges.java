@@ -44,7 +44,7 @@ public class GestionRegularisationCharges implements ActionListener{
 			this.regularisationDesCharges.dispose();
 			break;
 		case("  Valider  "):
-			
+			/*
 			try {
 				//METTRE LE RAPPORT POUR REGULARISATION
 				
@@ -52,6 +52,8 @@ public class GestionRegularisationCharges implements ActionListener{
 			} catch (SQLException | IOException e2) {
 				e2.printStackTrace();
 			}
+			
+			*/
 			
 			//System.out.println("Fichier cr��");
 			this.regularisationDesCharges.dispose();
