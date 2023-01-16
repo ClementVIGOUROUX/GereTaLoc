@@ -34,6 +34,8 @@ public class GestionRegularisationCharges implements ActionListener{
 	private RegularisationDesCharges regularisationDesCharges;
 	private Bail bail ;
 	private List<Charge> listCharges = new LinkedList<Charge>() ;
+	private Period period ;
+	private Logement logement ;
 	
 	public GestionRegularisationCharges(RegularisationDesCharges regularisationDesCharges) {
 		this.regularisationDesCharges = regularisationDesCharges ;
@@ -70,10 +72,20 @@ public class GestionRegularisationCharges implements ActionListener{
 			} catch (SQLException | IOException | ParseException e2) {
 				e2.printStackTrace();
 			}
+			
+			if(period.getYears() <= 0 && period.getMonths() <= 0 && period.getDays() <= 0) {
+				LocalDate dateRenouvellement = (LocalDate.parse(this.bail.getDateDebutRenouvellement()).plusYears(1)).minusDays(1);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				String dateRenouvele = dateRenouvellement.format(formatter);
+				//est ce que ca save vrm ?
+				// A TESTER AVEC UNE DATE SUPERIEUR A UN AN
+				bail.setDateFin(dateRenouvele);
+			}
+			
 			this.regularisationDesCharges.dispose();
 			break;
 		case("Valider"):
-			Logement logement = (Logement) this.regularisationDesCharges.getComboBoxLogement().getSelectedItem();
+			logement = (Logement) this.regularisationDesCharges.getComboBoxLogement().getSelectedItem();
 			System.out.println(logement);
 			DaoBail daoBail = new DaoBail() ;
 			this.bail = null ;
@@ -90,21 +102,17 @@ public class GestionRegularisationCharges implements ActionListener{
 			} else {
 				LocalDate from = java.time.LocalDate.now();
 				LocalDate to = LocalDate.parse(this.bail.getDateDebutRenouvellement()).plusYears(1);
-				Period period = Period.between(from, to);
+				period = Period.between(from, to);
 				
 				if(period.getYears() <= 0 && period.getMonths() <= 0 && period.getDays() <= 0) {
-					LocalDate dateRenouvellement = LocalDate.parse(this.bail.getDateDebutRenouvellement()).plusYears(1);
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-					String dateRenouvele = dateRenouvellement.format(formatter);
+					this.regularisationDesCharges.getLabelRegularisation().setText("Régularisation annuelle possible");
+					this.regularisationDesCharges.getLabelJour().setText("");
 					
-					logement.getBail().setDateDebutRenouvellement(dateRenouvele);
-					to = LocalDate.parse(this.bail.getDateDebutRenouvellement()).plusYears(1);
-					period = Period.between(dateRenouvellement, to);
+				} else {
+					this.regularisationDesCharges.getLabelRegularisation().setText("Régularisation annuelle dans"); 
+					this.regularisationDesCharges.getLabelJour().setText(period.getMonths() + "mois et " + period.getDays() + " jours");
 				}
-				this.regularisationDesCharges.getLabelRegularisation().setText("Rï¿½gularisation possible dans"); 
-				this.regularisationDesCharges.getLabelJour().setText(period.getMonths() + "mois et " + period.getDays() + " jours");
 				this.regularisationDesCharges.getPanelDroite().setVisible(true);
-				
 			}
 			
 			
