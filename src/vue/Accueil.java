@@ -64,7 +64,7 @@ public class Accueil extends JFrame implements ActionListener {
 	 */
 	public Accueil() {
 		
-		
+		System.out.println("test push git");
 		this.gestionClic = new GestionAccueil(this);
 		addWindowListener(this.gestionClic);
 		setTitle("Geretaloc");
