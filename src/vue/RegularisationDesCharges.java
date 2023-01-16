@@ -292,7 +292,7 @@ public class RegularisationDesCharges extends JFrame {
 	}
 
 	public String getFieldPrix() {
-		return fieldPrix.toString();
+		return fieldPrix.getText();
 	}
 
 	public void setFieldPrix(String fieldPrix) {

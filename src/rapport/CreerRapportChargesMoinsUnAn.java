@@ -6,9 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,20 +33,14 @@ import modele.dao.Iterateur;
 public class CreerRapportChargesMoinsUnAn {
 	
 	
-	public CreerRapportChargesMoinsUnAn(Bail bail, List<Charge> listeCharges,  int resteCaution) throws SQLException, IOException {
-		OutputStream fileOut = new FileOutputStream("ChargeLocataireMoins1an.docx");
+	public CreerRapportChargesMoinsUnAn(Bail bail, List<Charge> listeCharges) throws SQLException, IOException, ParseException {
+		OutputStream fileOut = new FileOutputStream("src/ChargeLocataireMoins1an.docx");
 		InputStream modele = new FileInputStream("src/vide.docx");
 		XWPFDocument document = new XWPFDocument(modele);
 		
 		
-		DaoLocataire daoLocataire = new DaoLocataire();
-		Iterateur<Locataire> iterateurLocataire = daoLocataire.findByBailIterateur(Integer.toString(bail.getIdBail()));
-		
-		while (iterateurLocataire.hasNext()) {
-			Locataire locataire = iterateurLocataire.next();
 			
 			XWPFParagraph paragraph = document.createParagraph();
-			//paragraph.setStyle("Titre");
 			paragraph.setAlignment(ParagraphAlignment.LEFT);
 			XWPFRun run = paragraph.createRun();
 			run.setBold(false);
@@ -58,15 +55,20 @@ public class CreerRapportChargesMoinsUnAn {
 			XWPFRun runA = paragraphA.createRun();
 			runA.setText("à");
 			
-			
+			DaoLocataire daoLocataire = new DaoLocataire();
+			Iterateur<Locataire> iterateurLocataire = daoLocataire.findByBailIterateur(Integer.toString(bail.getIdBail()));
 			XWPFParagraph paragraph2 = document.createParagraph();
 			paragraph2.setAlignment(ParagraphAlignment.RIGHT);
 			XWPFRun runLocataire = paragraph2.createRun();
 			runLocataire.setBold(true);
-			runLocataire.setText(locataire.getNom().toUpperCase() +" "+ locataire.getPrenom());
-			runLocataire.addCarriageReturn();
-			runLocataire.setBold(false);
+			while (iterateurLocataire.hasNext()) {
+				Locataire locataire = iterateurLocataire.next();
+				runLocataire.setText(locataire.getNom().toUpperCase() +" "+ locataire.getPrenom());
+				runLocataire.addCarriageReturn();
 			
+			}
+			
+			runLocataire.setBold(false);
 			LocalDate date = java.time.LocalDate.now();
 			DateTimeFormatter formatterNormal = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			String dateAjd = date.format(formatterNormal);
@@ -83,9 +85,14 @@ public class CreerRapportChargesMoinsUnAn {
 			runObjet.setBold(true);
 			runObjet.addCarriageReturn();
 			runObjet.addCarriageReturn();
+			
+			Date dateRenouvellement = new SimpleDateFormat("yyyy-MM-dd").parse(bail.getDateDebutRenouvellement());
+			String dateRenouvellementString = new SimpleDateFormat("dd/MM/yyyy").format(dateRenouvellement);
+			
+			
 			XWPFRun runPrincipal = paragraph3.createRun();
 			runPrincipal.setText("Je vous prie de bien vouloir trouver, ci-dessous, le détail des charges qui vous incombent."
-					 			  +".Ces charges portent sur une période allant du " + bail.getDateDebut() + " au " + bail.getDateFin() + " :");
+					 			  +".Ces charges portent sur une période allant du " + dateRenouvellementString + " au " + dateAjd+ " :");
 			runPrincipal.addCarriageReturn();
 			
 			
@@ -127,10 +134,34 @@ public class CreerRapportChargesMoinsUnAn {
 				totalCharge += res ;
 			}
 			
+			
+			LocalDate debut = LocalDate.parse(bail.getDateDebut(), DateTimeFormatter.ISO_LOCAL_DATE);
+			
+			Date dateAjd_2 = new SimpleDateFormat("dd/MM/yyyy").parse(dateAjd);
+			String dateAjdString = new SimpleDateFormat("yyyy-MM-dd").format(dateAjd_2);
+			
+	        LocalDate fin = LocalDate.parse(dateAjdString, DateTimeFormatter.ISO_LOCAL_DATE);
+	        
+	        
+	        
+	        Period period = Period.between(debut, fin);
+	        int month = Math.abs(period.getMonths());
+	        int years = Math.abs(period.getYears());
+	        int days = Math.abs(period.getDays());
+	        int nbmois = 0 ;
+	        if (days > 0 ) {
+	        	nbmois = years * 12 + month + 1;
+	        } else {
+	        	nbmois = years * 12 + month;
+	        }
+	       
+			
+			
+			
 			for(Charge c : listeChargesSansIndex) {
-				detailCharge.setText(c.getNom() +" : "+ c.getMontant());
+				detailCharge.setText(c.getNom() + " : " + c.getMontant() + " x " + nbmois + " = " + (c.getMontant() * nbmois));
 				detailCharge.addCarriageReturn();
-				totalCharge += c.getMontant();
+				totalCharge += (c.getMontant() * nbmois);
 			}
 			
 			XWPFRun phrase = paragraph4.createRun();
@@ -146,7 +177,7 @@ public class CreerRapportChargesMoinsUnAn {
 			XWPFRun deduction = paragraph5.createRun();
 			deduction.setText("À déduire :");
 			deduction.addCarriageReturn();
-			deduction.setText("Les provisions pour charges du " + bail.getDateDebutRenouvellement() + " au "+ bail.getDateFin() +" :");
+			deduction.setText("Les provisions pour charges du " + dateRenouvellementString + " au "+ dateAjd +" :");
 			
 			
 			//
@@ -157,67 +188,59 @@ public class CreerRapportChargesMoinsUnAn {
 			DaoPaiement daoPaiement = new DaoPaiement();
 			Iterateur<Paiement> iterateurPaiement =  daoPaiement.findByBail(Integer.toString(bail.getIdBail()));
 			Paiement paiement = iterateurPaiement.next();		
-			
-			LocalDate debut = LocalDate.parse(bail.getDateDebut(), DateTimeFormatter.ISO_LOCAL_DATE);
-	        LocalDate fin = LocalDate.parse(bail.getDateFin(), DateTimeFormatter.ISO_LOCAL_DATE);
-	        Period period = Period.between(debut, fin);
-	        int month = Math.abs(period.getMonths());
-	        int years = Math.abs(period.getYears());
-	        int days = Math.abs(period.getDays());
-	        int nbmois = 0 ;
-	        if (days > 0 ) {
-	        	nbmois = years * 12 + month + 1;
-	        } else {
-	        	nbmois = years * 12 + month;
-	        }
-	       
-	        
-	        
+		    
 	        
 			float calculDedu = paiement.getProvisionCharges() * nbmois;//pb paiement
 			calculDeduction.setText(" "+ paiement.getProvisionCharges() + " x "+nbmois + " = " + calculDedu);//probleme  select * from SAE_BAIL where id_paiement = ?
 			calculDeduction.addCarriageReturn();
-			
-			
-			
-			
-			
-			XWPFParagraph paragraph8 = document.createParagraph();
-			paragraph8.setAlignment(ParagraphAlignment.LEFT);
-			XWPFRun totalcaut = paragraph8.createRun();
-			float totalProvEtCaution = calculDedu + resteCaution;//mettre vrai valeur caution 
-			totalcaut.setText("Soit un total de : " );
-			XWPFRun totalcaut2 = paragraph8.createRun();
-			totalcaut2.setText(totalProvEtCaution +" Euros");
-			totalcaut2.addCarriageReturn();
-			totalcaut2.setColor("FF0000");
-			
+			int montantFinal = (int) (calculDedu - totalCharge) ;
 			
 			
 			XWPFParagraph paragraph9 = document.createParagraph();
 			paragraph9.setAlignment(ParagraphAlignment.LEFT);
 			XWPFRun conclusion = paragraph9.createRun();
 			
-			conclusion.setText("Nous restons vous devoir : " + totalProvEtCaution + " = ");//pas sur la
-			XWPFRun totalGras = paragraph9.createRun();
-			totalGras.setText(" Euros.");
+			if (montantFinal >= 0) {
+				conclusion.setText("Nous restons vous devoir : " + calculDedu + " - " + totalCharge + " = ");
+			}else {
+				conclusion.setText("Vous restez nous devoir : " + totalCharge + "-" + calculDedu + " = ");
+			}
+;			XWPFRun totalGras = paragraph9.createRun();
+			totalGras.setText( Math.abs(montantFinal) +" Euros.");
 			totalGras.setBold(true);
 			totalGras.setColor("FF0000");
 			totalGras.addCarriageReturn();
 			
-			//a faire ici
 			XWPFRun aLaBanque = paragraph9.createRun();
-			aLaBanque.setText("A partir du xxxx :");
-			aLaBanque.addCarriageReturn();
-			aLaBanque.setText("Loyer :");
-			aLaBanque.setText(paiement.getMontant()+" Euros");
-			aLaBanque.addCarriageReturn();
-			aLaBanque.setText("Provision pour charges :");
-			aLaBanque.setText(paiement.getProvisionCharges()+" Euros");
-			aLaBanque.addCarriageReturn();
-			aLaBanque.setText("Soit un total de ");
-			aLaBanque.setText(paiement.getProvisionCharges()+" Euros");
-			aLaBanque.setText("Je vous prie de croire, Madame, Monsieur, à ma considération distinguée.");
+			
+			if (montantFinal > 0 ) {
+				aLaBanque.setText("Veuillez trouver ci-joint le chèque du compte de M. " + p.getPrenom() + " " + p.getNom().toUpperCase() + "pour le montant restant vous devoir" );
+			}
+			
+			//a faire ici
+			XWPFRun RunCalculProvision = paragraph9.createRun();
+			
+			Date anneeCourantePlusUn = new SimpleDateFormat("yyyy-MM-dd").parse(bail.getDateFin());
+			String anneeCourantePlusUnString = new SimpleDateFormat("yyyy").format(anneeCourantePlusUn);
+			
+			RunCalculProvision.setText("A partir du 1er janvier " + anneeCourantePlusUnString + " :");
+			RunCalculProvision.addCarriageReturn();
+			RunCalculProvision.setText("Loyer :");
+			RunCalculProvision.setText(paiement.getMontant()+" Euros");
+			RunCalculProvision.addCarriageReturn();
+			RunCalculProvision.setText("Provision pour charges :");
+			int nouveauProvisionCharges = 0 ;
+			if (montantFinal >= 0 ) {
+				nouveauProvisionCharges = (int) (paiement.getProvisionCharges() - (montantFinal / 12)) ;
+			} else {
+				nouveauProvisionCharges = (int) (paiement.getProvisionCharges() + (montantFinal / 12));
+			}
+			RunCalculProvision.setText(nouveauProvisionCharges +" Euros");
+			RunCalculProvision.addCarriageReturn();
+			RunCalculProvision.setText("Soit un total de ");
+			RunCalculProvision.setText((paiement.getMontant() + nouveauProvisionCharges) + " Euros");
+			RunCalculProvision.addCarriageReturn();
+			RunCalculProvision.setText("Je vous prie de croire, Madame, Monsieur, à ma considération distinguée.");
 			
 		
 			
@@ -230,91 +253,6 @@ public class CreerRapportChargesMoinsUnAn {
 			
 			
 			
-		}
 	}
-
-	public static void main(String[] args) throws IOException, SQLException {
-	
-				
-		
-	}
-		
-        
-        
-		
-		
-		
-		
-		
-		
-		
-		
-		/**
-		run2.addCarriageReturn();
-		run2.addCarriageReturn();
-		run2.setText("Veuillez trouver ci-joint, l'ensemble des créneaux affichés dans la table");
-		run2.addCarriageReturn();
-		run2.addCarriageReturn();
-		
-		CictOracleDataSource.creerAcces("VGC4458A", "$iutinfo");
-		
-		DaoCreneau dao = new DaoCreneau();
-		List<Creneau> creneaux = dao.findAll();
-		XWPFTable tab = document.createTable(1, 1);
-		XWPFTableRow row = tab.createRow();
-		row.getCell(0).setText("Début de semaine");
-		row.addNewTableCell().setText("Jour de la semaine");
-		row.addNewTableCell().setText("Groupe");
-		row.addNewTableCell().setText("Heure de début du cours");
-		row.addNewTableCell().setText("Heure de fin de cours");
-		row.addNewTableCell().setText("Type du cours");
-		row.addNewTableCell().setText("Matière");
-		miseEnFormeCellules(row, "92D050", true, false);
-		
-		int i = 0 ;
-		for (Creneau c : creneaux) {
-			XWPFTableRow rowValeurs = tab.createRow();
-			rowValeurs.getCell(0).setText(c.getDebsemc());
-			rowValeurs.addNewTableCell().setText(c.getJourc());
-			rowValeurs.addNewTableCell().setText(c.getGrpc().toString());
-			rowValeurs.addNewTableCell().setText(c.getHeuredc());
-			rowValeurs.addNewTableCell().setText(c.getHeurefc());
-			rowValeurs.addNewTableCell().setText(c.getTypec());
-			rowValeurs.addNewTableCell().setText("matiere");
-			
-			if (i % 2 == 0) {
-				miseEnFormeCellules(rowValeurs, "CCFF66", false, false);
-			} else {
-				miseEnFormeCellules(rowValeurs, "99CCFF", false, false);
-			}
-			i++ ;
-			
-		}
-		
-		
-
-		XWPFParagraph paragraph4 = document.createParagraph();
-		XWPFRun run3 = paragraph3.createRun();
-		run3.addCarriageReturn();
-		run3.addCarriageReturn();
-		run3.setText("Pour toute modification, vous devez contacter le service des plannings ou le secrétariat");
-		run3.addCarriageReturn();
-		**/
-		
-	
-	
-	/**
-	public static void miseEnFormeCellules(XWPFTableRow ligne, String codeCouleurCellule, boolean isBold, boolean isItalic) {
-		List<XWPFTableCell> listCellules = ligne.getTableCells();
-		for (XWPFTableCell cell : listCellules) {
-			XWPFParagraph paragraph = cell.getParagraphs().get(0) ;
-			paragraph.setIndentationFirstLine(0);
-			paragraph.getRuns().get(0).setBold(isBold);
-			paragraph.getRuns().get(0).setItalic(isItalic);
-			cell.setColor(codeCouleurCellule);
-		}
-		
-	}**/
-	
 
 }

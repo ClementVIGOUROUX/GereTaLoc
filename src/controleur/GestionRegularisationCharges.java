@@ -5,9 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -31,7 +33,7 @@ public class GestionRegularisationCharges implements ActionListener{
 	
 	private RegularisationDesCharges regularisationDesCharges;
 	private Bail bail ;
-	private List<Charge> listCharges ;
+	private List<Charge> listCharges = new LinkedList<Charge>() ;
 	
 	public GestionRegularisationCharges(RegularisationDesCharges regularisationDesCharges) {
 		this.regularisationDesCharges = regularisationDesCharges ;
@@ -44,18 +46,30 @@ public class GestionRegularisationCharges implements ActionListener{
 			this.regularisationDesCharges.dispose();
 			break;
 		case("  Valider  "):
-			/*
+			DaoCharge daoCharge = new DaoCharge();
+			Iterateur<Charge> iterateurCharge = null ;
 			try {
-				//METTRE LE RAPPORT POUR REGULARISATION
-				
-				new CreerRapportChargesMoinsUnAn(this.bail, this.listCharges);
-			} catch (SQLException | IOException e2) {
-				e2.printStackTrace();
+				iterateurCharge = daoCharge.findByBailIterateur(Integer.toString(this.bail.getIdBail()));
+			} catch (SQLException e3) {
+				e3.printStackTrace();
 			}
 			
-			*/
+			while(iterateurCharge.hasNext()) {
+				Charge charge = iterateurCharge.next();
+				if (charge.getIndex_c() == 0) {
+					charge.setIndex_final(0);
+					charge.setPrixUnite(0);
+					this.listCharges.add(charge);
+				}
+			}
 			
-			//System.out.println("Fichier cr��");
+			
+			try {
+				new CreerRapportChargesMoinsUnAn(this.bail, this.listCharges);
+				System.out.println("Fichier cree");
+			} catch (SQLException | IOException | ParseException e2) {
+				e2.printStackTrace();
+			}
 			this.regularisationDesCharges.dispose();
 			break;
 		case("Valider"):
@@ -94,11 +108,11 @@ public class GestionRegularisationCharges implements ActionListener{
 			}
 			
 			
-			DaoCharge daoCharge = new DaoCharge();
+			DaoCharge daoCharge2 = new DaoCharge();
 			Iterateur<Charge> iterateur = null;
 			
 			try {
-				iterateur = daoCharge.findByBailIterateur(Integer.toString(this.bail.getIdBail()));
+				iterateur = daoCharge2.findByBailIterateur(Integer.toString(this.bail.getIdBail()));
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -119,7 +133,6 @@ public class GestionRegularisationCharges implements ActionListener{
 			charge.setBail(this.bail);
 			charge.setIndex_final(Integer.parseInt(this.regularisationDesCharges.getFieldIndexFinal())) ;
 			
-			//probleme mais marche dans archiver bail ??
 			charge.setPrixUnite(Float.parseFloat(this.regularisationDesCharges.getFieldPrix())) ;
 			JOptionPane.showMessageDialog(this.regularisationDesCharges,"L'index final et le prix � l'unit� de la charge " + charge.getNom() + " a bien �t� pris en compte ", "Information", JOptionPane.INFORMATION_MESSAGE);
 			listCharges.add(charge);

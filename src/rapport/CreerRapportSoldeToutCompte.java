@@ -93,7 +93,7 @@ public class CreerRapportSoldeToutCompte {
 			String dateFinString = new SimpleDateFormat("dd/MM/yyyy").format(dateFin);
 			
 			runPrincipal.setText("Je vous prie de bien vouloir trouver, ci-dessous, le détail du solde de tout compte." + 
-					 			 " Les charges énumérées ci-dessous porte sur la période allant du " + dateRenouvellementString + " au " + dateFinString + " :");
+					 			 " Les charges Ã©numÃ©rÃ©es ci-dessous porte sur la période allant du " + dateRenouvellementString + " au " + dateFinString + " :");
 			runPrincipal.addCarriageReturn();
 			
 			
@@ -123,9 +123,14 @@ public class CreerRapportSoldeToutCompte {
 			for (Charge c : listeChargesIndex) {
 				 int DiffIndexs = c.getIndex_final() - c.getIndex_c();
 				 float res = DiffIndexs * c.getPrixUnite();
-				detailCharge.setText(c.getNom() + " :	Index final :		" + c.getIndex_final() + " : "  + DiffIndexs + " x " + c.getPrixUnite() + " = "  +  res);
+				 int strlong = c.getNom().length();
+				 String espace="‎    ";
+				 for(int i = 0 ; i <= strlong ; i++) {
+					 espace = espace + "  ";
+				 }
+				detailCharge.setText(c.getNom() + " :Index final : " + c.getIndex_final() + " : "  + DiffIndexs + " x " + c.getPrixUnite() + " = "  +  res);
 				detailCharge.addCarriageReturn();
-				detailCharge.setText("		Index initial :		" + c.getIndex_c());
+				detailCharge.setText(espace+"Index initial :" + c.getIndex_c());
 				detailCharge.addCarriageReturn();
 				totalCharge += res ;
 			}
@@ -144,15 +149,18 @@ public class CreerRapportSoldeToutCompte {
 	        	nbmois = years * 12 + month;
 	        }
 			
-	        for(Charge c : listeChargesSansIndex) {
-	            detailCharge.setText(String.format("%20s : %6d x %2d = %6d", c.getNom(), c.getMontant(), nbmois,(c.getMontant() * nbmois)));
-	            detailCharge.addCarriageReturn();
-	            totalCharge += c.getMontant();
-	        }
 			
+			for(Charge c : listeChargesSansIndex) {
+				detailCharge.setText(c.getNom() + " : " + c.getMontant() + " x " + nbmois + " = " + (c.getMontant() * nbmois));
+				detailCharge.addCarriageReturn();
+				totalCharge += c.getMontant() * nbmois;
+			}
 			
-			detailCharge.setText("				Soit un sous total de 	" + totalCharge);
-			detailCharge.addCarriageReturn();
+			XWPFRun phrase = paragraph4.createRun();
+			detailCharge.setText("Soit un sous total de ");
+			phrase.setText(totalCharge+" Euros");
+			phrase.addCarriageReturn();
+			phrase.setColor("FF0000");
 			
 			
 			
@@ -161,7 +169,7 @@ public class CreerRapportSoldeToutCompte {
 			XWPFRun deduction = paragraph5.createRun();
 			deduction.setText("À déduire :");
 			deduction.addCarriageReturn();
-			deduction.setText("Les provisions pour charges du " + dateRenouvellementString + " au "+ dateFinString +" :");
+			deduction.setText("Les provisions pour charges du " + dateRenouvellementString + " au " + dateFinString + " :");
 			
 			
 			
@@ -172,10 +180,9 @@ public class CreerRapportSoldeToutCompte {
 			DaoPaiement daoPaiement = new DaoPaiement();
 			Iterateur<Paiement> iterateurPaiement =  daoPaiement.findByBail(Integer.toString(bail.getIdBail()));
 			Paiement paiement = iterateurPaiement.next();		
-		   
 	        
 	        
-			float calculDedu = paiement.getProvisionCharges() * nbmois;
+			float calculDedu = paiement.getProvisionCharges() * nbmois;//pb paiement
 			calculDeduction.setText(" "+ paiement.getProvisionCharges() + " x "+nbmois + " = " + calculDedu);//probleme  select * from SAE_BAIL where id_paiement = ?
 			calculDeduction.addCarriageReturn();
 			
@@ -184,17 +191,21 @@ public class CreerRapportSoldeToutCompte {
 			XWPFParagraph paragraph7 = document.createParagraph();
 			paragraph7.setAlignment(ParagraphAlignment.LEFT);
 			XWPFRun caution = paragraph7.createRun();
-			caution.setText("La caution versée lors de l'entrée dans votre appartement : " + resteCaution);
+			caution.setText("La caution versée lors de l'entrée dans votre appartement : " + resteCaution+ " Euros");
 			caution.addCarriageReturn();
 			
 			
 			
 			XWPFParagraph paragraph8 = document.createParagraph();
-			paragraph8.setAlignment(ParagraphAlignment.CENTER);
+			paragraph8.setAlignment(ParagraphAlignment.LEFT);
 			XWPFRun totalcaut = paragraph8.createRun();
 			float totalProvEtCaution = calculDedu + resteCaution;//mettre vrai valeur caution 
-			totalcaut.setText("Soit un total de : " + totalProvEtCaution);
-			totalcaut.addCarriageReturn();
+			totalcaut.setText("Soit un total de : " );
+			XWPFRun totalcaut2 = paragraph8.createRun();
+			totalcaut2.setText(totalProvEtCaution +" Euros");
+			totalcaut2.addCarriageReturn();
+			totalcaut2.setColor("FF0000");
+			
 			
 			
 			
@@ -207,14 +218,13 @@ public class CreerRapportSoldeToutCompte {
 			XWPFRun totalGras = paragraph9.createRun();
 			totalGras.setText(total +" Euros.");
 			totalGras.setBold(true);
+			totalGras.setColor("FF0000");
 			totalGras.addCarriageReturn();
 			XWPFRun aLaBanque = paragraph9.createRun();
 			aLaBanque.setText("Solde de tout compte remis ce jour à l'intéressé par chèque à la banque");
 			aLaBanque.addCarriageReturn();
 			aLaBanque.addCarriageReturn();
 			aLaBanque.setText("Je vous prie de croire, Madame, Monsieur, à ma considération distinguée.");
-			aLaBanque.addBreak(BreakType.PAGE);
-			
 		
 		document.write(fileOut);
 		
@@ -238,7 +248,7 @@ public class CreerRapportSoldeToutCompte {
 		/**
 		run2.addCarriageReturn();
 		run2.addCarriageReturn();
-		run2.setText("Veuillez trouver ci-joint, l'ensemble des créneaux affichés dans la table");
+		run2.setText("Veuillez trouver ci-joint, l'ensemble des crÃ©neaux affichÃ©s dans la table");
 		run2.addCarriageReturn();
 		run2.addCarriageReturn();
 		
@@ -248,13 +258,13 @@ public class CreerRapportSoldeToutCompte {
 		List<Creneau> creneaux = dao.findAll();
 		XWPFTable tab = document.createTable(1, 1);
 		XWPFTableRow row = tab.createRow();
-		row.getCell(0).setText("Début de semaine");
+		row.getCell(0).setText("DÃ©but de semaine");
 		row.addNewTableCell().setText("Jour de la semaine");
 		row.addNewTableCell().setText("Groupe");
-		row.addNewTableCell().setText("Heure de début du cours");
+		row.addNewTableCell().setText("Heure de dÃ©but du cours");
 		row.addNewTableCell().setText("Heure de fin de cours");
 		row.addNewTableCell().setText("Type du cours");
-		row.addNewTableCell().setText("Matière");
+		row.addNewTableCell().setText("MatiÃ¨re");
 		miseEnFormeCellules(row, "92D050", true, false);
 		
 		int i = 0 ;
@@ -283,7 +293,7 @@ public class CreerRapportSoldeToutCompte {
 		XWPFRun run3 = paragraph3.createRun();
 		run3.addCarriageReturn();
 		run3.addCarriageReturn();
-		run3.setText("Pour toute modification, vous devez contacter le service des plannings ou le secrétariat");
+		run3.setText("Pour toute modification, vous devez contacter le service des plannings ou le secrÃ©tariat");
 		run3.addCarriageReturn();
 		**/
 		
