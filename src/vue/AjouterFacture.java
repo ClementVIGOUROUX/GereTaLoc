@@ -35,27 +35,7 @@ public class AjouterFacture extends JFrame {
 	private GestionFactureImmeuble gestionClic;
 	private JComboBox<String> comboEntreprise ;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AjouterFacture frame = new AjouterFacture();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public AjouterFacture() {
-		System.out.println("test de clement vers kimi");
 		this.gestionClic = new GestionFactureImmeuble(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 721, 449);

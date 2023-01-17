@@ -2,37 +2,23 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.SystemColor;
 import javax.swing.JScrollPane;
-import javax.swing.JList;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import controleur.GestionMesFactures;
-import controleur.GestionMesLogements;
 import controleur.GestionTableImmeuble;
-
-import javax.swing.ListSelectionModel;
 
 public class MesFactures extends JFrame {
 
@@ -43,30 +29,9 @@ public class MesFactures extends JFrame {
 	private GestionMesFactures gestionClic ;
 	private GestionTableImmeuble gestionTable ;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MesFactures frame = new MesFactures();
-					
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public MesFactures() {
 		
 		this.gestionClic = new GestionMesFactures(this);
-		//this.gestionTable = new GestionTableImmeuble(this);
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MesFactures.class.getResource("/vue/icone.png")));
 		setTitle("Mes Logements");

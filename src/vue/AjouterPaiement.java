@@ -2,7 +2,6 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
@@ -30,25 +29,6 @@ public class AjouterPaiement extends JFrame {
 	
 	private GestionPaiement gestionClic;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AjouterPaiement frame = new AjouterPaiement();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public AjouterPaiement() {
 		this.gestionClic = new GestionPaiement(this);
 		setBackground(Color.WHITE);

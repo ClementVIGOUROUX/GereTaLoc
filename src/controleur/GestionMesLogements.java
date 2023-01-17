@@ -108,7 +108,7 @@ public class GestionMesLogements implements ActionListener {
 			
 			
 			if(logement.getBail() == null) {
-				this.infoLogement.getLabelRevision().setText("Ce logement n'est lié à  aucun bail");
+				this.infoLogement.getLabelRevision().setText("Ce logement n'est liï¿½ ï¿½ aucun bail");
 				this.infoLogement.getLabelJourRevision().setText("");
 				this.infoLogement.getbValiderIRL().setEnabled(false);
 			} else {
@@ -153,7 +153,7 @@ public class GestionMesLogements implements ActionListener {
 			
 			infoLogement.setVisible(true);
 			infoLogement.toFront();
-			
+			break;
 			
 			
 		case("Informations Immeuble"):

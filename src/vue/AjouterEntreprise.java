@@ -8,8 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controleur.GestionEntreprise;
-import controleur.GestionFactureImmeuble;
-
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -18,7 +16,6 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.SystemColor;
 import javax.swing.JTextField;
-import javax.swing.JCheckBox;
 import java.awt.FlowLayout;
 
 public class AjouterEntreprise extends JFrame {
@@ -34,25 +31,6 @@ public class AjouterEntreprise extends JFrame {
 	
 	private GestionEntreprise gestionClic;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AjouterEntreprise frame = new AjouterEntreprise();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public AjouterEntreprise() {
 		this.gestionClic = new GestionEntreprise(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

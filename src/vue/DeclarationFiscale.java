@@ -1,8 +1,6 @@
 package vue;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -15,8 +13,6 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.GridLayout;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class DeclarationFiscale extends JFrame  {
 
@@ -25,25 +21,7 @@ public class DeclarationFiscale extends JFrame  {
 	private JLabel labelAdeclarer;
 	private JLabel labelMontantTravaux;
 	private GestionDeclarationFiscale gestionClic;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DeclarationFiscale frame = new DeclarationFiscale();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the frame.
-	 */
 	public DeclarationFiscale() {
 		this.gestionClic = new GestionDeclarationFiscale(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

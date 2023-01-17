@@ -2,34 +2,21 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.SystemColor;
 import javax.swing.JScrollPane;
-import javax.swing.JList;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import java.awt.Insets;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import controleur.GestionLocataire;
 import controleur.GestionMesLocataires;
-import controleur.GestionMesLogements;
 
 public class MesLocataires extends JFrame{
 
@@ -38,27 +25,7 @@ public class MesLocataires extends JFrame{
 	
 	private GestionMesLocataires gestionClic;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MesLocataires frame = new MesLocataires();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public MesLocataires() {
-		System.out.println("Test");
 		this.gestionClic = new GestionMesLocataires(this);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 872, 552);

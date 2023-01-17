@@ -29,9 +29,12 @@ public class GestionAjouterCharge implements ActionListener{
 		switch(e.getActionCommand()) {
 		case("Charge avec Index"):
 			this.ajouterCharge.activerModif(true);
+			this.ajouterCharge.getTextFieldMontant().setText("");
 			break;
 		case("Charge sans Index"):
 			this.ajouterCharge.activerModif(false);
+			this.ajouterCharge.getTextFieldProvision().setText("");
+			this.ajouterCharge.getTextFieldIndex().setText("");
 			break;
 		case("Valider"):
 			int index;
