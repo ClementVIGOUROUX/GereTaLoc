@@ -17,8 +17,8 @@ public class GestionConnexion implements ActionListener, KeyListener {
 	
 	private Connexion connexion;
 	//private Accueil accueil ;
-	private  final String nomConnexion = "1";
-	private  final String motDePasse = "$1";
+	private  final String nomConnexion = "";
+	private  final String motDePasse = "";
 	
 
 	public GestionConnexion(Connexion cn) {

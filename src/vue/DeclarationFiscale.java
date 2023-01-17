@@ -6,17 +6,25 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controleur.GestionDeclarationFiscale;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.GridLayout;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class DeclarationFiscale extends JFrame {
+public class DeclarationFiscale extends JFrame  {
 
 	private JPanel contentPane;
-
+	private JLabel labelRI;
+	private JLabel labelAdeclarer;
+	private JLabel labelMontantTravaux;
+	private GestionDeclarationFiscale gestionClic;
 	/**
 	 * Launch the application.
 	 */
@@ -37,6 +45,7 @@ public class DeclarationFiscale extends JFrame {
 	 * Create the frame.
 	 */
 	public DeclarationFiscale() {
+		this.gestionClic = new GestionDeclarationFiscale(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 490, 331);
 		contentPane = new JPanel();
@@ -67,19 +76,19 @@ public class DeclarationFiscale extends JFrame {
 		lblNewLabel.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
 		panel_2.add(lblNewLabel);
 		
-		JLabel labalRI = new JLabel("New label");
-		labalRI.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
-		panel_2.add(labalRI);
+		labelRI = new JLabel("New label");
+		labelRI.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
+		panel_2.add(labelRI);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(Color.WHITE);
 		panel.add(panel_3);
 		
-		JLabel lblNewLabel_2 = new JLabel("A déclarer :");
+		JLabel lblNewLabel_2 = new JLabel("A dÃ©clarer :");
 		lblNewLabel_2.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
 		panel_3.add(lblNewLabel_2);
 		
-		JLabel labelAdeclarer = new JLabel("New label");
+		labelAdeclarer = new JLabel("New label");
 		labelAdeclarer.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
 		panel_3.add(labelAdeclarer);
 		
@@ -91,19 +100,32 @@ public class DeclarationFiscale extends JFrame {
 		lblNewLabel_4.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
 		panel_1.add(lblNewLabel_4);
 		
-		JLabel labelMontant = new JLabel("New label");
-		labelMontant.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
-		panel_1.add(labelMontant);
+		labelMontantTravaux = new JLabel("New label");
+		labelMontantTravaux.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
+		panel_1.add(labelMontantTravaux);
 		
 		JPanel panel_4 = new JPanel();
 		contentPane.add(panel_4, BorderLayout.SOUTH);
 		panel_4.setBackground(new Color(45, 72, 224));
 
 		JButton quitter = new JButton("Quitter");
+		quitter.addActionListener(this.gestionClic);
 		quitter.setForeground(Color.WHITE);
 		quitter.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
 		quitter.setBackground(new Color(220, 20, 60));
 		panel_4.add(quitter);
 	}
 
+	public JLabel getLabelRI() {
+		return labelRI;
+	}
+
+	public JLabel getLabelAdeclarer() {
+		return labelAdeclarer;
+	}
+
+	public JLabel getLabelMontantTravaux() {
+		return labelMontantTravaux;
+	}
+	
 }

@@ -18,6 +18,9 @@ import modele.dao.requetes.RequeteSelectBailLocataire;
 import modele.dao.requetes.RequeteSelectBailLogementImmeuble;
 import modele.dao.requetes.RequeteUpdateBailDateFin;
 import modele.dao.requetes.RequeteUpdateProprietaire;
+import modele.dao.requetes.SousProgrammeGetMontantTravaux;
+import modele.dao.requetes.SousProgrammeGetRevenuImmobilier;
+import modele.dao.requetes.SousProgrammeGetTaxeFonctiere;
 import modele.dao.requetes.SousProgrammeInsertBail;
 import modele.dao.requetes.SousProgrammeInsertSigner;
 
@@ -80,6 +83,42 @@ public class DaoBail extends DaoModele<Bail> implements Dao<Bail> {
 		sP.parametres(st, String.valueOf(loc.getIdLoc()),String.valueOf(bail.getIdBail()));
 		st.execute();
 		st.close();
+	}
+	
+	public double getRevenuImmobilier() throws SQLException {
+		double res = 0;
+		SousProgrammeGetRevenuImmobilier sP = new SousProgrammeGetRevenuImmobilier();
+		CallableStatement st = CictOracleDataSource.getConnectionBD().prepareCall(sP.appelSousProgramme());
+		
+		st.registerOutParameter (1, java.sql.Types.DOUBLE);
+		st.execute();
+		res = (double)st.getObject(1);
+
+		return res;
+	}
+	
+	public double getMontantTravaux() throws SQLException {
+		double res = 0;
+		SousProgrammeGetMontantTravaux sP = new SousProgrammeGetMontantTravaux();
+		CallableStatement st = CictOracleDataSource.getConnectionBD().prepareCall(sP.appelSousProgramme());
+		
+		st.registerOutParameter (1, java.sql.Types.DOUBLE);
+		st.execute();
+		res = (double)st.getObject(1);
+
+		return res;
+	}
+	
+	public double getTaxeFonciere() throws SQLException {
+		double res = 0;
+		SousProgrammeGetTaxeFonctiere sP = new SousProgrammeGetTaxeFonctiere();
+		CallableStatement st = CictOracleDataSource.getConnectionBD().prepareCall(sP.appelSousProgramme());
+		
+		st.registerOutParameter (1, java.sql.Types.DOUBLE);
+		st.execute();
+		res = (double)st.getObject(1);
+
+		return res;
 	}
 	
 
