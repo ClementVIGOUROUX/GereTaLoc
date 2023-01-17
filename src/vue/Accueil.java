@@ -63,7 +63,7 @@ public class Accueil extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Accueil() {
-		
+		System.out.println();
 		this.gestionClic = new GestionAccueil(this);
 		addWindowListener(this.gestionClic);
 		setTitle("Geretaloc");
