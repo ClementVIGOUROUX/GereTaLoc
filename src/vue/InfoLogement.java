@@ -2,8 +2,6 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -17,16 +15,12 @@ import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
-import controleur.GestionBail;
 import controleur.GestionInfoLogement;
 import modele.Diagnostics;
-import modele.Immeuble;
 import modele.Logement;
 
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
 public class InfoLogement extends JFrame {
@@ -46,25 +40,6 @@ public class InfoLogement extends JFrame {
 	private GestionInfoLogement gestionClic;
 	private JTextField fieldrevision;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InfoLogement frame = new InfoLogement(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public InfoLogement(Diagnostics diagnostic) {
 		this.diagnostic = diagnostic ;
 		this.gestionClic = new GestionInfoLogement(this);
@@ -382,22 +357,5 @@ public class InfoLogement extends JFrame {
 	public void setLabelLoyer(JLabel labelLoyer) {
 		this.labelLoyer = labelLoyer;
 	}
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

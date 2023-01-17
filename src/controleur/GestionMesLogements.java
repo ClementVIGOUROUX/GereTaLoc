@@ -158,6 +158,7 @@ public class GestionMesLogements implements ActionListener {
 			infoLogement.toFront();
 			
 			break;
+
 			
 		case("Informations Immeuble"):
 			

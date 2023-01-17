@@ -2,10 +2,8 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,8 +19,6 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
 public class InformationProp extends JInternalFrame {
@@ -35,31 +31,6 @@ public class InformationProp extends JInternalFrame {
 	private JCheckBox checkm;
 	private GestionInfoProp gestionClic ;
 
-	
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InformationProp frame = new InformationProp();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	public JCheckBox getCheckm() {
-		return checkm;
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public InformationProp() {
 		
 		this.gestionClic = new GestionInfoProp(this);
@@ -281,7 +252,9 @@ public class InformationProp extends JInternalFrame {
 		this.tnum.setText(tnum);
 	}
 	
-	
+	public JCheckBox getCheckm() {
+		return checkm;
+	}
 	
 
 }

@@ -1,29 +1,19 @@
 package vue;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
-
 import controleur.GestionAjouterCharge;
-import modele.Bail;
-import modele.Immeuble;
-
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
-import javax.swing.JTable;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class AjouterCharge extends JFrame{
 
@@ -38,25 +28,6 @@ public class AjouterCharge extends JFrame{
 	
 	private GestionAjouterCharge gestionClic;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AjouterCharge frame = new AjouterCharge();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public AjouterCharge() {
 		this.gestionClic = new GestionAjouterCharge(this);
 		

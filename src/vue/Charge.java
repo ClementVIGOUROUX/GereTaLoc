@@ -2,16 +2,12 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -21,8 +17,6 @@ import controleur.GestionCharge;
 import controleur.GestionTableCharge;
 
 import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class Charge extends JFrame{
 
@@ -35,25 +29,6 @@ public class Charge extends JFrame{
 	private JButton bImprimerTotal;
 	private JButton bRegularisation ;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Charge frame = new Charge();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public Charge() {
 		this.gestionClic = new GestionCharge(this);
 		this.gestionTable = new GestionTableCharge(this);

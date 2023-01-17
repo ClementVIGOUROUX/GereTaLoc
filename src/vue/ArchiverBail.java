@@ -2,14 +2,11 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controleur.GestionArchiverBail;
-import controleur.GestionFactureImmeuble;
 import modele.Logement;
 
 import javax.swing.JButton;
@@ -17,13 +14,10 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
-import javax.swing.BoxLayout;
-import java.awt.CardLayout;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionListener;
 
 public class ArchiverBail extends JFrame {
 
@@ -38,25 +32,6 @@ public class ArchiverBail extends JFrame {
 	private JComboBox<Logement> comboLogement ;
 	private JButton bValiderLogement ;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ArchiverBail frame = new ArchiverBail();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public ArchiverBail() {
 		this.gestionClic = new GestionArchiverBail(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -193,7 +168,7 @@ public class ArchiverBail extends JFrame {
 		panel_7.add(fieldIndexFinal);
 		fieldIndexFinal.setColumns(10);
 		
-		JLabel lblNewLabel_3 = new JLabel("Prix à l'unité :");
+		JLabel lblNewLabel_3 = new JLabel("Prix ï¿½ l'unitï¿½ :");
 		panel_7.add(lblNewLabel_3);
 		
 		fieldPrix = new JTextField();
@@ -246,11 +221,4 @@ public class ArchiverBail extends JFrame {
 	public void setFieldDeduireCaution(JTextField fieldDeduireCaution) {
 		this.fieldDeduireCaution = fieldDeduireCaution;
 	}
-	
-	
-	
-	
-	
-	
-
 }

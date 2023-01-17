@@ -1,8 +1,5 @@
 package vue;
 
-import java.awt.EventQueue;
-
-import javax.swing.JInternalFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
@@ -11,27 +8,15 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;
-import javax.swing.BoxLayout;
 import java.awt.GridLayout;
-import java.awt.SystemColor;
-import javax.swing.UIManager;
-
 import controleur.GestionLocataire;
 
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JSpinner;
-import javax.swing.JSlider;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JRadioButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 
 public class AjouterLocataire extends JFrame {
 	private JTextField fieldNom;
@@ -46,25 +31,6 @@ public class AjouterLocataire extends JFrame {
 	
 	private GestionLocataire gestionClic ;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AjouterLocataire frame = new AjouterLocataire();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public AjouterLocataire() {
 		
 		this.gestionClic = new GestionLocataire(this);

@@ -31,25 +31,6 @@ public class AjouterFactureLogement extends JFrame {
 	private JComboBox<String> comboLogement;
 	private JComboBox<String> comboEntreprise;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AjouterFactureLogement frame = new AjouterFactureLogement();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public AjouterFactureLogement() {
 		this.gestionClic = new GestionFactureLogement(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

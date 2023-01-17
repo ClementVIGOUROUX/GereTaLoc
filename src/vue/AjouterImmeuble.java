@@ -33,25 +33,6 @@ public class AjouterImmeuble extends JFrame {
 	private JCheckBox checkfibre ;
 	private GestionImmeuble gestionClic ;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AjouterImmeuble frame = new AjouterImmeuble();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public AjouterImmeuble() {
 		
 		this.gestionClic = new GestionImmeuble(this);

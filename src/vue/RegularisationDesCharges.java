@@ -27,9 +27,6 @@ import java.awt.event.ActionEvent;
 
 public class RegularisationDesCharges extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
@@ -40,28 +37,9 @@ public class RegularisationDesCharges extends JFrame {
 	private JLabel labelJour ;
 	private JLabel labelRegularisation ;
 	private JPanel panelDroite ;
-	
+
 	private GestionRegularisationCharges gestionClic ;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegularisationDesCharges frame = new RegularisationDesCharges();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public RegularisationDesCharges() {
 		
 		this.gestionClic = new GestionRegularisationCharges(this);
@@ -77,7 +55,7 @@ public class RegularisationDesCharges extends JFrame {
 		Haut.setBackground(new Color(28, 12, 78));
 		contentPane.add(Haut, BorderLayout.NORTH);
 		
-		JLabel lblRegulariserDesCharges = new JLabel("Régularisation Annuelle");
+		JLabel lblRegulariserDesCharges = new JLabel("Rï¿½gularisation Annuelle");
 		lblRegulariserDesCharges.setHorizontalAlignment(SwingConstants.LEFT);
 		lblRegulariserDesCharges.setForeground(Color.WHITE);
 		lblRegulariserDesCharges.setFont(new Font("Roboto Condensed", Font.PLAIN, 24));
@@ -134,7 +112,7 @@ public class RegularisationDesCharges extends JFrame {
 		panel_8.setBackground(Color.WHITE);
 		panel_3.add(panel_8, BorderLayout.CENTER);
 		
-		this.labelRegularisation = new JLabel("Régularisation possible dans");
+		this.labelRegularisation = new JLabel("Rï¿½gularisation possible dans");
 		this.labelRegularisation.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
 		panel_8.add(this.labelRegularisation);
 		
@@ -298,14 +276,5 @@ public class RegularisationDesCharges extends JFrame {
 	public void setFieldPrix(String fieldPrix) {
 		this.fieldPrix.setText(fieldPrix);;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

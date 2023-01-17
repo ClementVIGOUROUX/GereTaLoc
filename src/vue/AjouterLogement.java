@@ -43,26 +43,6 @@ public class AjouterLogement extends JFrame {
 	private GestionLogement gestionClic ;
 	private JTextField fieldParking;
 
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AjouterLogement frame = new AjouterLogement();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public AjouterLogement() {
 		
 		this.gestionClic = new GestionLogement(this);

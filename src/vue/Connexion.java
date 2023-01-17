@@ -2,8 +2,6 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
@@ -13,20 +11,13 @@ import controleur.GestionConnexion;
 
 import javax.swing.JLabel;
 import java.awt.GridLayout;
-import java.awt.SystemColor;
-
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
 
 public class Connexion extends JInternalFrame{
 	
@@ -35,13 +26,9 @@ public class Connexion extends JInternalFrame{
 	private JTextField fieldnom;
 	private GestionConnexion gestionClic ;
 
-	/**
-	 * Create the frame.
-	 */
 	public Connexion() {
 		
 		this.gestionClic = new GestionConnexion(this);
-		//addKeyListener(this.gestionClic);
 		
 		setTitle("Se Connecter");
 		setFrameIcon(new ImageIcon(Connexion.class.getResource("/vue/icone.png")));
@@ -170,8 +157,6 @@ public class Connexion extends JInternalFrame{
 		contentPane.add(droite, BorderLayout.EAST);
 		droite.setBackground(new Color(28, 12, 78));
 	}
-	
-	
 	
 	public String getValeurChLogin() {
 		return this.fieldnom.getText();

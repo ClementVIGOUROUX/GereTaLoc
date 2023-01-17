@@ -180,9 +180,22 @@ public class GestionAccueil implements ActionListener,WindowListener {
 			
 		case("D�claration Fiscale"):
 			this.declarationFiscale = new DeclarationFiscale();
+			DaoBail dbz = new DaoBail();
+			double revenu = 0;
+			double tf = 0;
+			double travaux = 0;
+			try {
+				revenu = dbz.getRevenuImmobilier();
+				tf = dbz.getTaxeFonciere();
+				travaux = dbz.getMontantTravaux();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 		
-			//A TOI DE JOUER KIMI LE BG
-		
+			this.declarationFiscale.getLabelMontantTravaux().setText(String.format("%.2f €",travaux));
+			this.declarationFiscale.getLabelAdeclarer().setText(String.format("%.2f €",tf));
+			this.declarationFiscale.getLabelRI().setText(String.format("%.2f €",revenu));
+			
 			this.declarationFiscale.setVisible(true);
 			this.declarationFiscale.toFront();
 			break ;
