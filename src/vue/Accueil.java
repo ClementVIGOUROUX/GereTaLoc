@@ -22,6 +22,10 @@ import java.awt.Toolkit;
 
 public class Accueil extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;		
 	private boolean estConnecte = false;
 	private JMenuItem sedeco ;
