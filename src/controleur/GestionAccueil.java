@@ -178,7 +178,7 @@ public class GestionAccueil implements ActionListener,WindowListener {
 			break;
 		
 			
-		case("DÃ©claration Fiscale"):
+		case("Déclaration Fiscale"):
 			this.declarationFiscale = new DeclarationFiscale();
 			DaoBail dbz = new DaoBail();
 			double revenu = 0;

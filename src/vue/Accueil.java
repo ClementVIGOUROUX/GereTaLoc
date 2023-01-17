@@ -166,7 +166,7 @@ public class Accueil extends JFrame{
 		mStats = new JButton("Statistiques");
 		mStats.addActionListener(this.gestionClic);
 		
-		mDF = new JButton("DÃ©claration Fiscale");
+		mDF = new JButton("Déclaration Fiscale");
 		mDF.addActionListener(this.gestionClic);
 		mDF.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
 		mDF.setBackground(Color.WHITE);
