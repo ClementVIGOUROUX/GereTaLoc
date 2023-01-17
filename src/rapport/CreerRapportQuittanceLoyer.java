@@ -5,31 +5,38 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
+import modele.Bail;
 import modele.Immeuble;
 import modele.Locataire;
 import modele.Paiement;
 import modele.Proprietaire;
-import modele.dao.CictOracleDataSource;
 import modele.dao.DaoImmeuble;
 import modele.dao.DaoLocataire;
 import modele.dao.DaoPaiement;
 import modele.dao.DaoProprietaire;
+import modele.dao.Iterateur;
 
 public class CreerRapportQuittanceLoyer {
 	
 	
-	public static void main(String[] args) throws IOException, SQLException {
+	public CreerRapportQuittanceLoyer(Bail bail) throws SQLException, IOException, ParseException {
 		OutputStream fileOut = new FileOutputStream("QuittanceLoyer.docx");
 		InputStream modele = new FileInputStream("src/vide.docx");
-		
-		CictOracleDataSource.creerAcces("VGC4458A", "$iutinfo");
 		
 		XWPFDocument document = new XWPFDocument(modele);
 		//titre
@@ -52,7 +59,7 @@ public class CreerRapportQuittanceLoyer {
 		XWPFRun adres = paragraph2.createRun();
 		Immeuble immeuble = null ;
 		DaoImmeuble daoImmeuble = new DaoImmeuble();
-		immeuble = daoImmeuble.findById("1");//recup le id quand on clique
+		immeuble = daoImmeuble.findById(String.valueOf(bail.getLogement().getImmeuble().getIdImmeuble()));
 		adres.setText("  "+immeuble.getRue() +" - "+ immeuble.getCp() +" " + immeuble.getVille());
 		adres.addCarriageReturn();
 		adres.addCarriageReturn();
@@ -63,43 +70,55 @@ public class CreerRapportQuittanceLoyer {
 		paragraph3.setAlignment(ParagraphAlignment.LEFT);
 		
 		//recuperation du locataire
-		Locataire locataire = null ;
+		List<Locataire> locataires = new LinkedList<Locataire>() ;
 		DaoLocataire daoLocataire = new DaoLocataire();
-		locataire = daoLocataire.findById("1");//recup le id quand on clique
-		String sexe ="";
-		if (locataire.getSexe()== "H") {
-			sexe = "M." ;
-		}else if (locataire.getSexe() == "F") {
-			sexe = "Mme. ";
-		}else {
-			sexe = "Mx .";
+		Iterateur<Locataire> iterateurLocataire = daoLocataire.findByBailIterateur(Integer.toString(bail.getIdBail()));
+		while(iterateurLocataire.hasNext()) {
+			locataires.add(iterateurLocataire.next());
 		}
+		
 		//recuperation du proprio
-		Proprietaire proprio = null ;
 		DaoProprietaire daoProprio = new DaoProprietaire();
-		proprio = daoProprio.findById("1");//recup le id quand on clique
+		Proprietaire proprio = daoProprio.findById("1");//recup le id quand on clique
 		
 		//prix
-		float total =0.00F;
-		Paiement paiement = null ;
+		List<Paiement> paiements = new LinkedList<Paiement>();
 		DaoPaiement daoPaiement = new DaoPaiement();
-		//paiement = daoPaiement.findById("1");//recup le id quand on clique
-		//total = paiement.getProvisionCharges() + paiement.getProvisionCharges();
+		paiements = daoPaiement.findByLogement(bail.getLogement().getNumero(), String.valueOf(bail.getLogement().getImmeuble().getIdImmeuble()));//recup le id quand on clique
+		float total = paiements.get(1).getMontant() + paiements.get(1).getProvisionCharges();
+		
+		String monologue = "Je soussigné M. " + proprio.getNom() + " propriétaire du logement désigné ci-dessus, déclare avoir reçu de ";
+		
+		
+		for(Locataire locataire : locataires) {
+			String sexe ="";
+			if (locataire.getSexe().equals("H")) {
+				sexe = "M." ;
+			}else if (locataire.getSexe().equals("F")) {
+				sexe = "Mme. ";
+			}else {
+				sexe = "Mx.";
+			}
 			
-		String monologue = "Je soussign� M. " + /**proprio.getNom()+**/ " propri�taire du logement d�sign� ci-dessus, d�clare avoir re�u de"
-				+ /**sexe + locataire.getNom() +**/ " , la somme de "+ /**total +**/" euros , au titre du paiement du loyer et des charges pour "
-				+ "la p�riode de location du /**les mois la **//**"
-				+ "X au X et lui en donne quittance, sous r�serve de tous mes droits.";
+			monologue += sexe + " " + locataire.getNom() + ", ";
+		}
+		
+		LocalDate currentDate = LocalDate.now();
+		LocalDate beforeDate = currentDate.minusMonths(1);
+			
+		monologue += " la somme de "+ total + " euros , au titre du paiement du loyer et des charges pour "
+				+ "la période de location du " + currentDate + " au " + beforeDate + " et lui en donne quittance, sous réserve de tous mes droits.";
 		
 		texte.setText(monologue);
 		texte.addCarriageReturn();
 		texte.addCarriageReturn();
 		
+		
 		//recap calcul
 		XWPFParagraph paragraph4 = document.createParagraph();
 		XWPFRun recap = paragraph4.createRun();
 		paragraph4.setAlignment(ParagraphAlignment.LEFT);
-		recap.setText("D�tail du r�glement :");
+		recap.setText("Détail du règlement :");
 		recap.setBold(true);
 		recap.addCarriageReturn();
 		
@@ -107,8 +126,8 @@ public class CreerRapportQuittanceLoyer {
 		XWPFParagraph paragraph5 = document.createParagraph();
 		XWPFRun loyer = paragraph5.createRun();
 		paragraph5.setAlignment(ParagraphAlignment.LEFT);
-		loyer.setText("Loyer :                                                                 "/**+paiement.getMontant()**/+
-				"Euros");
+		loyer.setText("Loyer :                                                                 "+ paiements.get(1).getMontant() +
+				" Euros");
 		loyer.addCarriageReturn();
 		
 		//provisions
@@ -116,14 +135,14 @@ public class CreerRapportQuittanceLoyer {
 		XWPFRun provision = paragraph7.createRun();
 		paragraph7.setAlignment(ParagraphAlignment.LEFT);
 		provision.setText("Provision pour charges :                                 "
-				+ " "/**+paiement.getProvisionCharges()**/+"Euros");
+				+ " " + paiements.get(1).getProvisionCharges() + " Euros");
 		provision.addCarriageReturn();
 		
 		//total
 		XWPFParagraph paragraph9 = document.createParagraph();
 		XWPFRun totalLP = paragraph9.createRun();
 		paragraph9.setAlignment(ParagraphAlignment.LEFT);
-		totalLP.setText("Total :                                                                 "/**+total**/+"Euros");
+		totalLP.setText("Total :                                                                 " + total +" Euros");
 		totalLP.setBold(true);
 		totalLP.addCarriageReturn();
 		
@@ -131,7 +150,7 @@ public class CreerRapportQuittanceLoyer {
 		XWPFParagraph paragraph11 = document.createParagraph();
 		XWPFRun date = paragraph11.createRun();
 		paragraph11.setAlignment(ParagraphAlignment.LEFT);
-		date.setText("Date du paiement : "/**+ paiement.getDateP()**/);
+		date.setText("Date du paiement : "+ paiements.get(1).getDateP());
 		date.addCarriageReturn();
 		date.addCarriageReturn();
 		
@@ -148,7 +167,6 @@ public class CreerRapportQuittanceLoyer {
 		fileOut.close();
 		modele.close();
 		document.close();
-		CictOracleDataSource.Deconnecter();
 		
 	}
 }

@@ -11,7 +11,7 @@ public class RequeteSelectPaiementByLogement implements Requete<Paiement>{
 
 	@Override
 	public String requete() {
-		return "select p.* from SAE_PAIEMENT p, SAE_BAIL b where p.ID_BAIL = b.ID_BAIL AND b.numero_l = ? AND b.id_immeuble = ? ORDER BY MONTANT DESC";
+		return "select p.* from SAE_PAIEMENT p, SAE_BAIL b where p.ID_BAIL = b.ID_BAIL AND b.numero_l = ? AND b.id_immeuble = ? ORDER BY DATE_P DESC";
 		
 	}
 

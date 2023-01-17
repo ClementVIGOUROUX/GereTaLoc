@@ -70,7 +70,7 @@ public class DaoPaiement extends DaoModele<Paiement> implements Dao<Paiement>{
 	protected Paiement creerInstance(ResultSet curseur) throws SQLException {
 		DaoBail daoBail = new DaoBail();
 		Bail b = daoBail.findById(Integer.toString(curseur.getInt(6)));
-		String dateP = curseur.getString(3);
+		String dateP = curseur.getString(4);
 		return new Paiement(curseur.getInt(1),curseur.getString(2),curseur.getInt(3),dateP,curseur.getFloat(5),b);
 	}
 	

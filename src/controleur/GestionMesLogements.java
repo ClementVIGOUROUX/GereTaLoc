@@ -3,7 +3,9 @@ package controleur;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.LinkedList;
@@ -24,6 +26,7 @@ import modele.dao.DaoDiagnostics;
 import modele.dao.DaoFacture;
 import modele.dao.DaoImmeuble;
 import modele.dao.Iterateur;
+import rapport.CreerRapportQuittanceLoyer;
 import vue.AjouterLogement;
 import vue.InfoLogement;
 import vue.MesFactures;
@@ -153,8 +156,9 @@ public class GestionMesLogements implements ActionListener {
 			
 			infoLogement.setVisible(true);
 			infoLogement.toFront();
-			break;
 			
+			break;
+
 			
 		case("Informations Immeuble"):
 			
@@ -189,10 +193,25 @@ public class GestionMesLogements implements ActionListener {
 			this.mesFactures.setVisible(true);
 			this.mesFactures.toFront();
 			break;
+		
+		case("Quittance"):
 			
+			Logement loge = null;
+			try {
+				loge = this.lireLigneTableLogement(mesLogements.getTablelogement(), mesLogements.getTablelogement().getSelectedRow());
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			
-			
+			try {
+				new CreerRapportQuittanceLoyer(loge.getBail());
+			} catch (SQLException | IOException | ParseException e1) {
+				e1.printStackTrace();
+			}
+		
 		}
+		
+			
 	}
 	
 	

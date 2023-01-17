@@ -167,6 +167,11 @@ public class MesLogements extends JFrame {
 		panel_3.add(binfo);
 		binfo.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
 		
+		JButton btnQuittance = new JButton("Quittance");
+		btnQuittance.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
+		panel_3.add(btnQuittance);
+		btnQuittance.addActionListener(this.gestionClic);
+		
 		JPanel centre = new JPanel();
 		pantab.add(centre, BorderLayout.CENTER);
 		centre.setLayout(new GridLayout(0, 3, 0, 0));

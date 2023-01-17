@@ -223,22 +223,24 @@ public class CreerRapportChargesMoinsUnAn {
 			Date anneeCourantePlusUn = new SimpleDateFormat("yyyy-MM-dd").parse(bail.getDateFin());
 			String anneeCourantePlusUnString = new SimpleDateFormat("yyyy").format(anneeCourantePlusUn);
 			
-			RunCalculProvision.setText("A partir du 1er janvier " + anneeCourantePlusUnString + " :");
-			RunCalculProvision.addCarriageReturn();
-			RunCalculProvision.setText("Loyer :");
-			RunCalculProvision.setText(paiement.getMontant()+" Euros");
-			RunCalculProvision.addCarriageReturn();
-			RunCalculProvision.setText("Provision pour charges :");
 			int nouveauProvisionCharges = 0 ;
 			if (montantFinal >= 0 ) {
 				nouveauProvisionCharges = (int) (paiement.getProvisionCharges() - (montantFinal / 12)) ;
 			} else {
 				nouveauProvisionCharges = (int) (paiement.getProvisionCharges() + (montantFinal / 12));
 			}
+			
+			RunCalculProvision.setText("A partir du 1er janvier " + anneeCourantePlusUnString + " :");
+			RunCalculProvision.addCarriageReturn();
+			RunCalculProvision.setText("Loyer :");
+			RunCalculProvision.setText(paiement.getMontant() - nouveauProvisionCharges +" Euros");
+			RunCalculProvision.addCarriageReturn();
+			RunCalculProvision.setText("Provision pour charges :");
+			
 			RunCalculProvision.setText(nouveauProvisionCharges +" Euros");
 			RunCalculProvision.addCarriageReturn();
 			RunCalculProvision.setText("Soit un total de ");
-			RunCalculProvision.setText((paiement.getMontant() + nouveauProvisionCharges) + " Euros");
+			RunCalculProvision.setText((paiement.getMontant()) + " Euros");
 			RunCalculProvision.addCarriageReturn();
 			RunCalculProvision.setText("Je vous prie de croire, Madame, Monsieur, à ma considération distinguée.");
 			
