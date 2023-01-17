@@ -1,19 +1,25 @@
 package controleur;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import modele.Immeuble;
 import modele.Locataire;
 import modele.Logement;
+import modele.dao.DaoDiagnostics;
+import modele.dao.DaoEtatdesLieux;
 import modele.dao.DaoImmeuble;
 import modele.dao.DaoLocataire;
 import modele.dao.DaoLogement;
@@ -26,6 +32,8 @@ import vue.MesLocation;
 public class GestionMesLocations implements ActionListener {
 
 	private MesLocation mesLocation ;
+	private DaoEtatdesLieux daoEDL;
+	private JFileChooser chooserEDL ;
 	
 	public GestionMesLocations(MesLocation locations) {
 		this.mesLocation = locations ;
@@ -126,7 +134,37 @@ public class GestionMesLocations implements ActionListener {
 			archiverBail.toFront();
 			break;
 			
+		case(" Ajouter"):
+			this.chooserEDL = new JFileChooser();
+	    	this.chooserEDL.setDialogTitle("Selectionnez votre État des Lieux :");
+	    	this.chooserEDL.setFileSelectionMode(JFileChooser.FILES_ONLY);
+	    	chooserEDL.setVisible(true);
+	    	chooserEDL.showOpenDialog(chooserEDL);
+	    	GestionTableEDLBail.setFileEDL(chooserEDL.getSelectedFile());
+			GestionTableEDLBail.getEdl().setRepertoire(GestionTableEDLBail.getFileEDL().getAbsolutePath());
+			this.daoEDL = new DaoEtatdesLieux();
+			daoEDL.updateRepertoire(GestionTableEDLBail.getEdl());;
+			System.out.println(GestionTableEDLBail.getFileEDL().getAbsolutePath());
 			
+			break;
+			
+		case("Telecharger"):
+			if(!Desktop.isDesktopSupported()) { 
+				System.out.println("not supported");  
+				}
+				Desktop desktop = Desktop.getDesktop();
+				if (GestionTableEDLBail.getFileEDL() != null) {
+					System.out.println(GestionTableEDLBail.getFileEDL().getAbsolutePath());
+					try {
+						desktop.open(GestionTableEDLBail.getFileEDL());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}else {
+					System.out.println("file null");
+				}
+			
+			break ;
 			
 	}
 	}
