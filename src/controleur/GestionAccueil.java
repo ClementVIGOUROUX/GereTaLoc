@@ -5,10 +5,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import modele.Bail;
 import modele.Immeuble;
@@ -30,6 +34,7 @@ import vue.InformationProp;
 import vue.MesLocataires;
 import vue.MesLocation;
 import vue.MesLogements;
+import vue.Statistiques;
 
 public class GestionAccueil implements ActionListener,WindowListener {
 	
@@ -39,6 +44,7 @@ public class GestionAccueil implements ActionListener,WindowListener {
 	private MesLocation mesLocation ;
 	private Charge charge ;
 	private DeclarationFiscale declarationFiscale ;
+	private Statistiques statistiques ;
 	
 	public GestionAccueil(Accueil accueil) {
 		this.accueil = accueil ;
@@ -202,6 +208,85 @@ public class GestionAccueil implements ActionListener,WindowListener {
 			
 		case("Statistiques"):
 			System.out.println(e.getActionCommand() + " : Pas encore fait.");
+			
+			/*
+			DaoLocataire daoLocataireStats = new DaoLocataire();
+			Iterateur<Locataire> iterateurLocataireStats = null ;
+			try {
+				iterateurLocataireStats = daoLocataireStats.findAllAvecBail();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			
+			*/
+			
+			//DefaultCategoryDataset datasetAge = new DefaultCategoryDataset();
+			//Locataire locataire = null ;
+			//while(iterateurLocataireStats.hasNext()) {
+				//locataire = iterateurLocataireStats.next();
+				//datasetAge.addValue(locataire, null, null);
+			//}
+				 //datasetAge.addValue(20, "Series 1", "Data Point 1");
+			       //datasetAge.addValue(45, "Series 1", "Data Point 2");
+			       //datasetAge.addValue(83, "Series 1", "Data Point 3");
+			/*
+			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+			DaoBail daoBail = new DaoBail();
+			List<Bail> listBaux = new ArrayList<Bail>();
+			try {
+				listBaux = daoBail.findAll();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			for (Bail bail : listBaux) {
+				dataset.addValue(bail.getDateDebut(), null, null);
+			}
+			
+			*/
+			
+			DaoLocataire daoLocataireStats = new DaoLocataire();
+			Iterateur<Locataire> iterateurLocataireStats = null ;
+			try {
+				iterateurLocataireStats = daoLocataireStats.findAllAvecBail();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			
+			DefaultCategoryDataset datasetSexe = new DefaultCategoryDataset();
+			Locataire locataire = null ;
+			int nbHommes = 0 ;
+			int nbFemmes = 0 ;
+			int nbAutres = 0 ;
+			while(iterateurLocataireStats.hasNext()) {
+				locataire = iterateurLocataireStats.next();
+				if (locataire.getSexe().equals("M")) {
+					nbHommes ++ ;
+				} else if (locataire.getSexe().equals("F")) {
+					nbFemmes++ ;
+				} else {
+					nbAutres++ ;
+				}
+			}
+			
+			datasetSexe.addValue(nbHommes, "Series 1", "Hommes");
+			datasetSexe.addValue(nbFemmes, "Series 1", "Femmes");
+	       	datasetSexe.addValue(nbAutres, "Series 1", "Autres");
+	       
+			
+			/*
+	       DaoBail daoBail = new DaoBail();
+			try {
+				System.out.println(daoBail.getNbBauxParMois()); 
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			*/
+	       
+	       
+			this.statistiques = new Statistiques(datasetSexe);
+			this.statistiques.setVisible(true);
+			this.statistiques.toFront();
 			break;
 		}
 	}

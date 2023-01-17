@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.ParseException;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import modele.dao.requetes.RequeteSelectBailLogementImmeuble;
 import modele.dao.requetes.RequeteUpdateBailDateFin;
 import modele.dao.requetes.RequeteUpdateProprietaire;
 import modele.dao.requetes.SousProgrammeGetMontantTravaux;
+import modele.dao.requetes.SousProgrammeGetNbBauxParMois;
 import modele.dao.requetes.SousProgrammeGetRevenuImmobilier;
 import modele.dao.requetes.SousProgrammeGetTaxeFonctiere;
 import modele.dao.requetes.SousProgrammeInsertBail;
@@ -27,6 +29,8 @@ import modele.dao.requetes.SousProgrammeInsertSigner;
 public class DaoBail extends DaoModele<Bail> implements Dao<Bail> {
 
 	private static Iterateur<Bail> iterateurBail ;
+	
+	
 	
 	@Override
 	public void create(Bail donnees) throws SQLException {
@@ -83,6 +87,17 @@ public class DaoBail extends DaoModele<Bail> implements Dao<Bail> {
 		sP.parametres(st, String.valueOf(loc.getIdLoc()),String.valueOf(bail.getIdBail()));
 		st.execute();
 		st.close();
+	}
+	
+	public String getNbBauxParMois() throws SQLException {
+		SousProgrammeGetNbBauxParMois sP = new SousProgrammeGetNbBauxParMois();
+		CallableStatement st = CictOracleDataSource.getConnectionBD().prepareCall(sP.appelSousProgramme());
+		st.registerOutParameter(1, java.sql.Types.REF_CURSOR);
+		st.execute();
+		//ResultSet rS = (ResultSet) st.getObject(1);
+		
+		
+		return (String) st.getObject(1);
 	}
 	
 	public double getRevenuImmobilier() throws SQLException {
@@ -212,3 +227,6 @@ public class DaoBail extends DaoModele<Bail> implements Dao<Bail> {
 
 	
 }
+
+
+

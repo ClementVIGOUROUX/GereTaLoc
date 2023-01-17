@@ -42,7 +42,7 @@ public class GestionMesLocataires implements ActionListener {
 		} else if (locataire.getSexe().equals("F")){
 			stringSexe = "Femme" ;
 		} else {
-			stringSexe = "Non renseignÃ©";
+			stringSexe = "Non renseigné";
 		}
 		
 		
