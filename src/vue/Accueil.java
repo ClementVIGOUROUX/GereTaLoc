@@ -4,33 +4,23 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controleur.GestionAccueil;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import java.awt.Insets;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowEvent;
 
-public class Accueil extends JFrame implements ActionListener {
+public class Accueil extends JFrame{
 
 	private JPanel contentPane;		
 	private boolean estConnecte = false;
@@ -40,12 +30,15 @@ public class Accueil extends JFrame implements ActionListener {
 	private JButton mleg;
 	private JButton mloc;
 	private JButton mloca;
+	private JButton mCharge;
+	private JButton mStats;
+	private JButton mDF;
 	private GestionAccueil gestionClic ;
+	private JMenu nom;
 	
 
-	/**
-	 * Launch the application.
-	 */
+	//Main de l'application GereTaLoc
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {	
@@ -59,11 +52,7 @@ public class Accueil extends JFrame implements ActionListener {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Accueil() {
-		System.out.println();
 		this.gestionClic = new GestionAccueil(this);
 		addWindowListener(this.gestionClic);
 		setTitle("Geretaloc");
@@ -97,7 +86,7 @@ public class Accueil extends JFrame implements ActionListener {
 		menuBar.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
 		panel.add(menuBar);
 		
-		JMenu nom = new JMenu("thierry milan");
+		nom = new JMenu("Login");
 		
 		nom.setHorizontalAlignment(SwingConstants.CENTER);
 		nom.setForeground(Color.BLACK);
@@ -164,24 +153,23 @@ public class Accueil extends JFrame implements ActionListener {
 		mloca.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
 		navigation.add(mloca);
 		
-		JButton b4 = new JButton("Charges");
-		b4.addActionListener(this.gestionClic);
-		b4.setBackground(Color.WHITE);
-		b4.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
-		navigation.add(b4);
+		mCharge = new JButton("Charges");
+		mCharge.addActionListener(this.gestionClic);
+		mCharge.setBackground(Color.WHITE);
+		mCharge.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
+		navigation.add(mCharge);
 		
-		JButton b5 = new JButton("Statistiques");
-		b5.addActionListener(this.gestionClic);
+		mStats = new JButton("Statistiques");
+		mStats.addActionListener(this.gestionClic);
 		
-		JButton b4_1 = new JButton("Déclaration Fiscale");
-		b4_1.addActionListener(this.gestionClic);
-		b4_1.addActionListener(this);
-		b4_1.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
-		b4_1.setBackground(Color.WHITE);
-		navigation.add(b4_1);
-		b5.setBackground(Color.WHITE);
-		b5.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
-		navigation.add(b5);
+		mDF = new JButton("Déclaration Fiscale");
+		mDF.addActionListener(this.gestionClic);
+		mDF.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
+		mDF.setBackground(Color.WHITE);
+		navigation.add(mDF);
+		mStats.setBackground(Color.WHITE);
+		mStats.setFont(new Font("Roboto Condensed", Font.PLAIN, 15));
+		navigation.add(mStats);
 		mleg.addActionListener(this.gestionClic);
 		mloca.addActionListener(this.gestionClic);
 		
@@ -189,6 +177,11 @@ public class Accueil extends JFrame implements ActionListener {
 	}
 	
 	public void activerItems(boolean b) {
+		if(b == true) {
+			nom.setText("Thierry Millan");
+		}else {
+			nom.setText("Login");
+		}
 		this.setEstConnecte(b);
 		sedeco.setEnabled(b);
 		seco.setEnabled(!b);
@@ -196,6 +189,9 @@ public class Accueil extends JFrame implements ActionListener {
         mleg.setEnabled(b);
         mloc.setEnabled(b);
         mloca.setEnabled(b);
+        mDF.setEnabled(b);
+        mStats.setEnabled(b);
+        mCharge.setEnabled(b);
     }
 	
 	
@@ -205,13 +201,5 @@ public class Accueil extends JFrame implements ActionListener {
 
 	public void setEstConnecte(boolean estConnecte) {
 		this.estConnecte = estConnecte;
-	}
-	
-
-	
-
-	
-	
-	public void actionPerformed(ActionEvent e) {
 	}
 }
