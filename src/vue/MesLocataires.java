@@ -58,6 +58,7 @@ public class MesLocataires extends JFrame{
 	 * Create the frame.
 	 */
 	public MesLocataires() {
+		System.out.println("Test");
 		this.gestionClic = new GestionMesLocataires(this);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 872, 552);
