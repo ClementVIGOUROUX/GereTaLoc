@@ -37,7 +37,7 @@ public class GestionMesLocataires implements ActionListener {
 	public static void  ecrireLigneTableLocataire(JTable table, int numLigne, Locataire locataire) {
 		
 		String stringSexe ;
-		if (locataire.getSexe().equals("M")) {
+		if (locataire.getSexe().equals("H")) {
 			stringSexe = "Homme" ;
 		} else if (locataire.getSexe().equals("F")){
 			stringSexe = "Femme" ;
