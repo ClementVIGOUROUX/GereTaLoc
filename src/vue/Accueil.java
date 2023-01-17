@@ -194,7 +194,6 @@ public class Accueil extends JFrame{
         mCharge.setEnabled(b);
     }
 	
-	
 	public boolean getEstConnecte() {
 		return estConnecte;
 	}
